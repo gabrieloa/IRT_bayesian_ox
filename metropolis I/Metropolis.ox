@@ -2,21 +2,18 @@
 #include <oxfloat.oxh>
 #include <oxprob.h>
 
-#include "rtnorm.ox"
-#include "CondVarLatenteXZ.ox"
-#include "CondThetaj.ox"
-#include "CondAB.ox"
+#include "rbinom.ox"
+#include "CondZ.ox"
+#include "MetropolisTheta.ox"
+#include "MetropolisAB.ox"
 #include "CondC.ox"
 
-#include "rbinom.ox"
+#include "matrizlog.ox"
 #include "SBPtheta.ox"
 #include "SBPb.ox"
 #include "calcV.ox"
 
 #include "l.ox"
-
-//#include "AcumMean.ox"
-
 
 main()
 {
@@ -29,10 +26,7 @@ time=timer();
  	decl Resp, ind;
 	decl k, X, Z;
 
-
 	Resp =loadmat("Resp.mat");
-//	ind =loadmat("ThetaInd.mat");
-
 
 	decl ThetaAtual, aAtual, bAtual, cAtual,V;
 
@@ -74,19 +68,7 @@ println(columns(Resp));
 
 	MeanBPrior= 0 ;		   // media a priori de b
 	SigmaBPrior= 3;		   // desvio padrão de b
-	
 
-	//burn-in
-	
-
-
-   
-//    ThetaAtual = SBPtheta(Resp);   //score bruto padronizado de theta
-//	aAtual = ones(NumItem, 1);        //a0;
-//	bAtual = SBPb(Resp);       //b0;	 
-//	cAtual = constant(0.1,NumItem, 1);//c0;  
-
-		  						   	 
 	decl Theta, a, b, c, ThetaMean, MeanA, MeanB, MeanC,un,mean,w, sa,sb,sc,stheta,medA,medB;
 
 	Theta=zeros(NumSim+1,100);
@@ -106,71 +88,64 @@ println(columns(Resp));
      llike[0]= calcl(Resp,ThetaAtual,aAtual,bAtual,cAtual,MeanAPrior,SigmaAPrior,MeanBPrior,SigmaBPrior,AlphaPrior,BetaPrior)[0];
 
 
-	// Inicio Gibbs	   
+	decl taua,taub,taut;
+
+	taut=ones(1,NumStud);
+
+	taua=0.1*ones(NumItem,1);
+
+	//adicionar o código para definir qual sera o valor de taut e taua a ser usada nas iterações 
+
+	decl t1,t2,st1,st2;
+
+	st1=t1=zeros(1,NumStud);
+
+	st2=t2=zeros(NumItem,1);
+
+	t2=ones(NumItem,1);		
+
+	decl matriz,probb;
+
+	probb=probn(aAtual*ThetaAtual-bAtual*ones(1,NumStud));
+	matriz=log(1-probb)+Resp.*(log(probb)-log(1-probb));
+
 	for(k = 1; k <= NumSim; ++k)	 
 	{
 
-//	  
-//	  Condicional Completa da Variável Latente X e Z
-//				
-       V=  calcV(aAtual,  bAtual, cAtual, ThetaAtual);
+	V= calcV(aAtual,bAtual,cAtual,ThetaAtual);										                   //criar
+																									   
+	Z=CondZ(aAtual,bAtual,cAtual,ThetaAtual,V,Resp);
 
-	
-	   
-	  [X,Z]=  CondVarLatenteXZ(aAtual,  bAtual, ThetaAtual, V, Resp);
+	//atualizando a matriz com o log para o Metropolis-Hasting
+	[matriz]=Matrizlog(aAtual,bAtual,ThetaAtual,matriz,t2,1,Resp);
 
-	
+	if(k==1){
+	t2=zeros(NumItem,1);
+	}
+																																 
+	ThetaAtual,t1=MetropolisTheta(aAtual,bAtual,ThetaAtual,Resp,Z,taut,matriz);
 
-//	  Condicional Completa para Theta	  
-//							 
-	   ThetaAtual = CondThetaj(aAtual, bAtual, X, Z, MeanThetaPrior, SigmaThetaPrior);
+	st1+=t1;
 
-	   Theta[k][] = ThetaAtual[0:99] ;
+	Theta[k][] = ThetaAtual[0:99] ;
 
-	 
+	[matriz]=Matrizlog(aAtual,bAtual,ThetaAtual,matriz,t1,0,Resp);
 
-//	  	
-//	  Condicional Completa para A e B	  
-//					
-	   [aAtual,bAtual]=CondAB(ThetaAtual, X, Z, MeanAPrior, MeanBPrior, SigmaAPrior, SigmaBPrior);
-	 				  
-       a[k][] = aAtual';
-	   b[k][] = bAtual';
-	
-//	  
-//	  Condicional Completa para c	  
-//		 
-      cAtual = CondC(Z, AlphaPrior, BetaPrior, NumStud, NumItem);
+	aAtual,bAtual,t2=MetropolisAB(aAtual,bAtual,ThetaAtual,Resp,Z,MeanAPrior,SigmaAPrior,MeanBPrior,SigmaBPrior,taua,taua,matriz);		  //criar
 
-	  c[k][] = cAtual';					
+	st2+=t2;
 
-     llike[k]= calcl(Resp,ThetaAtual,aAtual,bAtual,cAtual,MeanAPrior,SigmaAPrior,MeanBPrior,SigmaBPrior,AlphaPrior,BetaPrior)[0];
+	a[k][] = aAtual';
+	b[k][] = bAtual';
 
-	   
-	   println(k);
+	cAtual = CondC(Z, AlphaPrior, BetaPrior, NumStud, NumItem);
 
-	   println(timespan(time));
-	
- 
+	c[k][] = cAtual';					
+
+    llike[k]= calcl(Resp,ThetaAtual,aAtual,bAtual,cAtual,MeanAPrior,SigmaAPrior,MeanBPrior,SigmaBPrior,AlphaPrior,BetaPrior)[0];
+
+	println(k);
+
+	println(timespan(time)); 
 }
-
-
-
-						 
-savemat("a.mat",a,1) ;	
-savemat("b.mat",b,1) ;	
-savemat("c.mat",c,1) ;
-savemat("Theta.mat",Theta,1) ;
-savemat("llike.mat",llike,1) ;
- 
-println("Time = ",timespan(time));
-
-//println(temp~(meanc(Theta[2000:][]))');
-//println(temp|zeros(5,1)|meanc(c[2000:][])');
-//println(temp~meanc((b[2000:][]./a[2000:][]))');
-
-}	  
-	  
-
-	
-
+}
