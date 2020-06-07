@@ -61,7 +61,7 @@ for(k = 1; k <= 15000; ++k)
 
 	[matriz]=Matrizlog(a,b,c,Theta,matriz,t2,0,Resp);
 
-	cAtual,t3= MetropolisC(a,b,c,Theta,Resp,AlphaPrior,BetaPrior,delta,matriz);
+	c,t3= MetropolisC(a,b,c,Theta,Resp,AlphaPrior,BetaPrior,delta,matriz);
 												   
 	if(k>999){
 	st3+=t3;}

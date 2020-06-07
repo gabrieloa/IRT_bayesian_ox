@@ -11,7 +11,8 @@
 #include "SBPtheta.ox"
 #include "SBPb.ox"	  
 
-#include "l.ox"		  
+#include "l.ox"
+#include "set_param.ox"
 main()
 {
 
@@ -87,6 +88,9 @@ println(columns(Resp));
 	taut=0.7*ones(1,NumStud);
 	taua=0.1*ones(NumItem,1);
 	delta=0.05*ones(NumItem,1);
+
+	taut,taua, delta = set_param(aAtual, bAtual, cAtual, ThetaAtual, taut, taua, delta, Resp);
+
 
 	//adicionar o código para definir qual sera o valor de taut e taua a ser usada nas iterações 
 

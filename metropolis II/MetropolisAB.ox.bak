@@ -1,4 +1,4 @@
-MetropolisAB(const a,const b,const c,const Theta, const Resp, const Z, const Ma, const Sa, const Mb, const Sb, const Taua, const Taub,const Matriz){
+MetropolisAB(const a,const b,const c,const Theta, const Resp, const Ma, const Sa, const Mb, const Sb, const Taua, const Taub,const Matriz){
 decl NumItens,afinal,bfinal,ta,aprop,bprop,un,prob,M,m,aux,aux1,k,alpha,auxa; 
 decl i;
 decl Vero_prop, Vero_atual, ind;

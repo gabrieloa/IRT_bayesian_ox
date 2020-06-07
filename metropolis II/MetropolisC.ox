@@ -34,7 +34,7 @@ m=((cprop./c).^(alpha-1)).*(((1-cprop)./(1-c)).^(beta-1)).*(minr((cprop+delta)~o
 
 aux1=Vero_prop-Vero_atual;
 
-ind=exp(aux1+m).>=1;
+ind=exp(aux1).*m.>=1;
 
 al=(1-ind).*exp(aux1+m)+(1-ind).*ones(NumItens,1);
 

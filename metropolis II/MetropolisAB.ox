@@ -35,7 +35,7 @@ aux1=Vero_prop-Vero_atual;
 
 ind=exp(aux1+m).>=1;
 	
-alpha=auxa.*((1-ind).*exp(aux1+m)+(1-ind).*ones(NumItens,1));
+alpha=auxa.*((1-ind).*exp(aux1+m)+(ind).*ones(NumItens,1));
 
 k=rbinom(NumItens,1,1,alpha);
 

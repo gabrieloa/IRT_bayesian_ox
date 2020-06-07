@@ -30,7 +30,7 @@ Vero_prop=sumr(M);
 
 Vero_atual=sumr(Matriz);
 
-m=((cprop./c).^(alpha-1)).*(((1-cprop)./(1-c)).^(beta-1)).*(minr((cprop+delta)|ones(NumItens,1))-max((cprop-delta)|zeros(NumItens,1)))./(min((c+delta)|ones(NumItens,1))-max((c-delta)|zeros(NumItens,1)));			//corrigir por que não esta retoranando vetor no min 
+m=((cprop./c).^(alpha-1)).*(((1-cprop)./(1-c)).^(beta-1)).*(minr((cprop+delta)~ones(NumItens,1))-max((cprop-delta)~zeros(NumItens,1)))./(min((c+delta)~ones(NumItens,1))-max((c-delta)~zeros(NumItens,1)));			//corrigir por que não esta retoranando vetor no min 
 
 aux1=Vero_prop-Vero_atual;
 

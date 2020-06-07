@@ -88,6 +88,9 @@ println(columns(Resp));
 	taua=0.1*ones(NumItem,1);
 	delta=0.05*ones(NumItem,1);
 
+	taut,taua, delta = set_param(aAtual, bAtual, cAtual, ThetaAtual, taut, taua, delta, Resp);
+
+
 	//adicionar o código para definir qual sera o valor de taut e taua a ser usada nas iterações 
 
 	decl t1,t2,st1,st2,st3,t3;
@@ -119,7 +122,7 @@ println(columns(Resp));
 
 	[matriz]=Matrizlog(aAtual,bAtual,cAtual,ThetaAtual,matriz,t1,0,Resp);
 
-	[aAtual,bAtual,t2]=MetropolisAB(aAtual,bAtual,cAtual,ThetaAtual,Resp,MeanAPrior,SigmaAPrior,MeanBPrior,SigmaBPrior,taua,taua,matriz);		  //criar
+	aAtual,bAtual,t2=MetropolisAB(aAtual,bAtual,cAtual,ThetaAtual,Resp,MeanAPrior,SigmaAPrior,MeanBPrior,SigmaBPrior,taua,taua,matriz);		  //criar
 
 	st2+=t2;
 
@@ -128,7 +131,7 @@ println(columns(Resp));
 
 	[matriz]=Matrizlog(aAtual,bAtual,cAtual,ThetaAtual,matriz,t2,0,Resp);
 
-	[cAtual,t3]= MetropolisC(aAtual,bAtual,cAtual,ThetaAtual,Resp,AlphaPrior,BetaPrior,delta,matriz);
+	cAtual,t3= MetropolisC(aAtual,bAtual,cAtual,ThetaAtual,Resp,AlphaPrior,BetaPrior,delta,matriz);
 	c[k][] = cAtual';					
 
     llike[k]= calcl(Resp,ThetaAtual,aAtual,bAtual,cAtual,MeanAPrior,SigmaAPrior,MeanBPrior,SigmaBPrior,AlphaPrior,BetaPrior)[0];
