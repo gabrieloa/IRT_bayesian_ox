@@ -14,6 +14,7 @@
 #include "calcV.ox"
 
 #include "l.ox"
+#include "set_param.ox"
 
 main()
 {
@@ -87,12 +88,13 @@ println(columns(Resp));
 
      llike[0]= calcl(Resp,ThetaAtual,aAtual,bAtual,cAtual,MeanAPrior,SigmaAPrior,MeanBPrior,SigmaBPrior,AlphaPrior,BetaPrior)[0];
 
-
 	decl taua,taub,taut;
 
 	taut=ones(1,NumStud);
 
-	taua=0.1*ones(NumItem,1);
+	taua=0.3*ones(NumItem,1);
+
+	taut,taua = set_param(aAtual, bAtual, cAtual, ThetaAtual, taut, taua, Resp);
 
 	//adicionar o código para definir qual sera o valor de taut e taua a ser usada nas iterações 
 

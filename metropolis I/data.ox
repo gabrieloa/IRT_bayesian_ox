@@ -24,7 +24,7 @@ ranseed(111);
  	decl a0, b0, c0, Theta0, Resp;
 
  	NumStud = 500;   																		    // Colunas
- 	NumItem = 200;   																		    // Linhas 
+ 	NumItem = 20;   																		    // Linhas 
 
 					
     a0 = 0.3 + 2*ranu(NumItem, 1);				        									// Cria vetor Coluna com parâmetro de discriminação  // COLUNA
