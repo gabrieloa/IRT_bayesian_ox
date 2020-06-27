@@ -2,6 +2,9 @@
 #include <set_a.ox>
 
 set_param(decl a, decl b, decl c, decl Theta, decl taut, decl taua, decl Resp){
+decl time1;
+
+time1=timer();
 
 decl t1, t2;
 decl st1, st2;
@@ -91,5 +94,7 @@ for(k = 1; k <= 15000; ++k)
 	}
 }
 
+println(timespan(time1));
+println("Fim de set de parâemtros");
 return (taut, taua);
 }

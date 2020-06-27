@@ -66,17 +66,17 @@ println(columns(Resp));
 
 	decl Theta, a, b, c, ThetaMean, MeanA, MeanB, MeanC,un,mean,w, sa,sb,sc,stheta,medA,medB;
 
-	Theta=zeros(NumSim+1,100);
-	Theta[0][] = ThetaAtual[0:99];													    //   1 x NumStud para guardar cadeias de Markov de Theta
+	Theta=zeros(NumSim+1,20);
+	Theta[0][] = ThetaAtual[0:19];													    //   1 x NumStud para guardar cadeias de Markov de Theta
 
-	a = zeros(NumSim+1,NumItem);
-	a[0][]=aAtual';									//  NumItem x 1 para guardar cadeias de Markov de "a"
+	a = zeros(NumSim+1,20);
+	a[0][0:19]=aAtual';									//  NumItem x 1 para guardar cadeias de Markov de "a"
 
-	b = zeros(NumSim+1,NumItem);
-	b[0][]=bAtual';
+	b = zeros(NumSim+1,20);
+	b[0][0:19]=bAtual';
 	
-	c = zeros(NumSim+1,NumItem);
-	c[0][]=cAtual';
+	c = zeros(NumSim+1,20);
+	c[0][0:19]=cAtual';
 
 	 decl llike=zeros(NumSim+1,1);
 
@@ -119,7 +119,7 @@ println(columns(Resp));
 
 	st1+=t1;
 
-	Theta[k][] = ThetaAtual[0:99] ;
+	Theta[k][] = ThetaAtual[0:19] ;
 
 	[matriz]=Matrizlog(aAtual,bAtual,cAtual,ThetaAtual,matriz,t1,0,Resp);
 
@@ -127,13 +127,13 @@ println(columns(Resp));
 
 	st2+=t2;
 
-	a[k][] = aAtual';
-	b[k][] = bAtual';
+	a[k][0:19] = aAtual';
+	b[k][0:19] = bAtual';
 
 	[matriz]=Matrizlog(aAtual,bAtual,cAtual,ThetaAtual,matriz,t2,0,Resp);
 
 	cAtual,t3= MetropolisC(aAtual,bAtual,cAtual,ThetaAtual,Resp,AlphaPrior,BetaPrior,delta,matriz);
-	c[k][] = cAtual';					
+	c[k][0:19] = cAtual';					
 
     llike[k]= calcl(Resp,ThetaAtual,aAtual,bAtual,cAtual,MeanAPrior,SigmaAPrior,MeanBPrior,SigmaBPrior,AlphaPrior,BetaPrior)[0];
 
@@ -141,4 +141,11 @@ println(columns(Resp));
 
 	println(timespan(time)); 
 }
+savemat("a.mat",a,1);
+savemat("b.mat",b,1);
+savemat("c.mat",c,1);
+savemat("Theta.mat",Theta,1);
+savemat("llike.mat",llike,1);
+
+println("Time = ",timespan(time));
 }

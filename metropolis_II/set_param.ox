@@ -4,6 +4,9 @@
 
 set_param(decl a, decl b, decl c, decl Theta, decl taut, decl taua, decl delta, decl Resp){
 
+decl time1;
+
+time1=timer();
 decl t1, t2, t3;
 decl st1, st2, st3;
 decl NumStud,NumItem,i,k;
@@ -98,6 +101,8 @@ for(k = 1; k <= 15000; ++k)
 	i+=1;
 	}
 }
+println(timespan(time1));
+println("Fim de set de parâmetros");
 
 return (taut, taua);
 }
