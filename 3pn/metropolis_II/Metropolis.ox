@@ -37,7 +37,7 @@ time=timer();
 	
 	aAtual=ones(NumItem,1);
 	bAtual=SBPb(Resp);
-	cAtual=zeros(NumItem,1)+0.1;
+	cAtual=zeros(NumItem,1)+0.2;
 	ThetaAtual=SBPtheta(Resp);
 	//decl ThetaC=loadmat("ThetaC.mat");
 
@@ -46,8 +46,6 @@ time=timer();
 println(rows(Resp));
 println(columns(Resp));
 
-
-	
 	//hiperparametros
 
 	decl AlphaPrior, BetaPrior, MeanThetaPrior,SigmaThetaPrior, MeanAPrior, MeanBPrior, SigmaAPrior, SigmaBPrior;
@@ -85,13 +83,12 @@ println(columns(Resp));
 
 	decl taua,taub,taut,delta;
 
-	taut=0.7*ones(1,NumStud);
+	taut=0.6*ones(1,NumStud);
 	taua=0.1*ones(NumItem,1);
-	delta=0.05*ones(NumItem,1);
+	delta=(10^-20)*ones(NumItem,1);
 
-	taut,taua, delta = set_param(aAtual, bAtual, cAtual, ThetaAtual, taut, taua, delta, Resp);
-
-
+	[taut,taua,delta] = set_param(aAtual, bAtual, cAtual, ThetaAtual, taut, taua, delta, Resp);
+	  
 	//adicionar o código para definir qual sera o valor de taut e taua a ser usada nas iterações 
 
 	decl t1,t2,st1,st2,st3,t3;
@@ -109,30 +106,30 @@ println(columns(Resp));
 
 	for(k = 1; k <= NumSim; ++k)	 
 	{
-	[matriz]=Matrizlog(aAtual,bAtual,cAtual,ThetaAtual,matriz,t3,1,Resp);
+	matriz=Matrizlog(aAtual,bAtual,cAtual,ThetaAtual,matriz,t3,1,Resp);
 
 	if(k==1){
 	t3=zeros(NumItem,1);
 	}
 	
-	ThetaAtual,t1=MetropolisTheta(aAtual,bAtual,cAtual,ThetaAtual,Resp,taut,matriz);
+	[ThetaAtual,t1]=MetropolisTheta(aAtual,bAtual,cAtual,ThetaAtual,Resp,taut,matriz);
 
 	st1+=t1;
 
 	Theta[k][] = ThetaAtual[0:19] ;
 
-	[matriz]=Matrizlog(aAtual,bAtual,cAtual,ThetaAtual,matriz,t1,0,Resp);
+	matriz=Matrizlog(aAtual,bAtual,cAtual,ThetaAtual,matriz,t1,0,Resp);
 
-	aAtual,bAtual,t2=MetropolisAB(aAtual,bAtual,cAtual,ThetaAtual,Resp,MeanAPrior,SigmaAPrior,MeanBPrior,SigmaBPrior,taua,taua,matriz);		  //criar
+	[aAtual,bAtual,t2]=MetropolisAB(aAtual,bAtual,cAtual,ThetaAtual,Resp,MeanAPrior,SigmaAPrior,MeanBPrior,SigmaBPrior,taua,taua,matriz);		  //criar
 
 	st2+=t2;
 
 	a[k][0:19] = aAtual';
 	b[k][0:19] = bAtual';
 
-	[matriz]=Matrizlog(aAtual,bAtual,cAtual,ThetaAtual,matriz,t2,0,Resp);
+	matriz=Matrizlog(aAtual,bAtual,cAtual,ThetaAtual,matriz,t2,0,Resp);
 
-	cAtual,t3= MetropolisC(aAtual,bAtual,cAtual,ThetaAtual,Resp,AlphaPrior,BetaPrior,delta,matriz);
+	[cAtual,t3]= MetropolisC(aAtual,bAtual,cAtual,ThetaAtual,Resp,AlphaPrior,BetaPrior,delta,matriz);
 	c[k][0:19] = cAtual';					
 
     llike[k]= calcl(Resp,ThetaAtual,aAtual,bAtual,cAtual,MeanAPrior,SigmaAPrior,MeanBPrior,SigmaBPrior,AlphaPrior,BetaPrior)[0];

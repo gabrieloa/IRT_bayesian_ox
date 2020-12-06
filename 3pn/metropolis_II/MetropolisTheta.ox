@@ -41,5 +41,5 @@ k=rbinom(1,sizec(Theta),1,alpha);
 
 thetafinal=(1-k).*Theta+k.*thetaprop;
 			 
-return(thetafinal,k);
+return{thetafinal,k};
 }

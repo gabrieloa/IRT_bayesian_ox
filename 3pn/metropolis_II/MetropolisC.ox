@@ -1,4 +1,4 @@
-﻿MetropolisC(const a,const b,const c,const Theta, const Resp, const alpha, const beta, const delta,const Matriz){
+MetropolisC(const a,const b,const c,const Theta, const Resp, const alpha, const beta, const delta,const Matriz){
 decl NumItens,cfinal,tc,psi,gamma,cprop,un,prob,M,m,aux,aux1,k,al,auxa; 
 decl i;
 decl Vero_prop, Vero_atual,ind;
@@ -30,7 +30,17 @@ Vero_prop=sumr(M);
 
 Vero_atual=sumr(Matriz);
 
-m=((cprop./c).^(alpha-1)).*(((1-cprop)./(1-c)).^(beta-1)).*(minr((cprop+delta)~ones(NumItens,1))-max((cprop-delta)~zeros(NumItens,1)))./(min((c+delta)~ones(NumItens,1))-max((c-delta)~zeros(NumItens,1)));			//corrigir por que não esta retoranando vetor no min 
+decl m1, m2, m3;
+
+
+m1 = (cprop./c).^(alpha-1);
+
+m2 = ((1-cprop)./(1-c)).^(beta-1);
+
+m3 = (minr((c+delta)~ones(NumItens,1))-maxr((c-delta)~zeros(NumItens,1)))./(minr((cprop+delta)~ones(NumItens,1))-maxr((cprop-delta)~zeros(NumItens,1)));
+
+
+m= m1.*m2.*m3;
 
 aux1=Vero_prop-Vero_atual;
 
@@ -42,5 +52,5 @@ k=rbinom(NumItens,1,1,al);
 
 cfinal=(1-k).*c+k.*cprop;
 
-return(cfinal,k);
+return{cfinal,k};
 }

@@ -43,6 +43,6 @@ afinal=(1-k).*a+k.*aprop;
 
 bfinal=(1-k).*b+k.*bprop;
 
-return(afinal,bfinal,k);
+return{afinal,bfinal,k};
 
 }

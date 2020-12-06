@@ -42,34 +42,35 @@ st2=t2=st3=t3=zeros(NumItem,1);
 
 t3=ones(NumItem,1);	
 
-for(k = 1; k <= 15000; ++k)	 
+for(k = 1; k <= 20000; ++k)	 
 	{
-	[matriz]=Matrizlog(a,b,c,Theta,matriz,t3,1,Resp);
+	matriz=Matrizlog(a,b,c,Theta,matriz,t3,1,Resp);
 
 	if(k==1){
 	t3=zeros(NumItem,1);
 	}
 																																 
-	Theta,t1=MetropolisTheta(a,b,c,Theta,Resp,taut,matriz);																	 
+	[Theta,t1]=MetropolisTheta(a,b,c,Theta,Resp,taut,matriz);																	 
 
-	if(k>999){
+	if(k>1999){
 	st1+=t1;}
 
-	[matriz]=Matrizlog(a,b,c,Theta,matriz,t1,0,Resp);
+	matriz=Matrizlog(a,b,c,Theta,matriz,t1,0,Resp);
 
-	a,b,t2=MetropolisAB(a,b,c,Theta,Resp,MeanAPrior,SigmaAPrior,MeanBPrior,SigmaBPrior,taua,taua,matriz);		  //criar
+	[a,b,t2]=MetropolisAB(a,b,c,Theta,Resp,MeanAPrior,SigmaAPrior,MeanBPrior,SigmaBPrior,taua,taua,matriz);		  //criar
 
-	if(k>999){
+	if(k>1999){
 	st2+=t2;}
 
-	[matriz]=Matrizlog(a,b,c,Theta,matriz,t2,0,Resp);
+	matriz=Matrizlog(a,b,c,Theta,matriz,t2,0,Resp);
 
-	c,t3= MetropolisC(a,b,c,Theta,Resp,AlphaPrior,BetaPrior,delta,matriz);
+	[c,t3]= MetropolisC(a,b,c,Theta,Resp,AlphaPrior,BetaPrior,delta,matriz);
+
 												   
-	if(k>999){
+	if(k>1999){
 	st3+=t3;}
 
-	if(k==i*1000-1){
+	if(k==(i+1)*1000-1){
 	 st1=st1./1000;
 	 st2=st2./1000;
 	 st3=st3./1000;
@@ -81,11 +82,13 @@ for(k = 1; k <= 15000; ++k)
 	 
 	savemat("st1.mat",st1,1);
 	savemat("st2.mat",st2,1);
-	savemat("st3.mat",st2,1);
+	savemat("st3.mat",st3,1);
 	
 	taut = set_theta(st1,taut);
 
 	taua = set_a(st2,taua);
+
+	print(st3); 
 
 	delta = set_c(st3,delta);
 	
@@ -97,12 +100,14 @@ for(k = 1; k <= 15000; ++k)
 	savemat("tauaotimo.mat",taua,1);
 	savemat("deltaotimo.mat",delta,1);
 
+	print(delta);
 	
-	i+=1;
+	i+=1;	;
 	}
 }
 println(timespan(time1));
 println("Fim de set de parâmetros");
 
-return (taut, taua);
+print(taua);  
+return{taut,taua,delta};
 }
