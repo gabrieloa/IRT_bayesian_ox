@@ -94,8 +94,10 @@ println(columns(Resp));
 
 	taua=0.3*ones(NumItem,1);
 
-	taut,taua = set_param(aAtual, bAtual, cAtual, ThetaAtual, taut, taua, Resp);
+	[taut,taua] = set_param(aAtual, bAtual, cAtual, ThetaAtual, taut, taua, Resp);
 
+	print(taut);
+	print(taua);
 	//adicionar o código para definir qual sera o valor de taut e taua a ser usada nas iterações 
 
 	decl t1,t2,st1,st2;
@@ -119,21 +121,21 @@ println(columns(Resp));
 	Z=CondZ(aAtual,bAtual,cAtual,ThetaAtual,V,Resp);
 
 	//atualizando a matriz com o log para o Metropolis-Hasting
-	[matriz]=Matrizlog(aAtual,bAtual,ThetaAtual,matriz,t2,1,Resp);
+	matriz=Matrizlog(aAtual,bAtual,ThetaAtual,matriz,t2,1,Resp);
 
 	if(k==1){
 	t2=zeros(NumItem,1);
 	}
 																																 
-	ThetaAtual,t1=MetropolisTheta(aAtual,bAtual,ThetaAtual,Resp,Z,taut,matriz);
+	[ThetaAtual,t1]=MetropolisTheta(aAtual,bAtual,ThetaAtual,Resp,Z,taut,matriz);
 
 	st1+=t1;
 
 	Theta[k][] = ThetaAtual[0:19] ;
 
-	[matriz]=Matrizlog(aAtual,bAtual,ThetaAtual,matriz,t1,0,Resp);
+	matriz=Matrizlog(aAtual,bAtual,ThetaAtual,matriz,t1,0,Resp);
 
-	aAtual,bAtual,t2=MetropolisAB(aAtual,bAtual,ThetaAtual,Resp,Z,MeanAPrior,SigmaAPrior,MeanBPrior,SigmaBPrior,taua,taua,matriz);		  //criar
+	[aAtual,bAtual,t2]=MetropolisAB(aAtual,bAtual,ThetaAtual,Resp,Z,MeanAPrior,SigmaAPrior,MeanBPrior,SigmaBPrior,taua,taua,matriz);		  //criar
 
 	st2+=t2;
 

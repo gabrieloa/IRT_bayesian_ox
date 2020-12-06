@@ -48,20 +48,20 @@ for(k = 1; k <= 15000; ++k)
 	Z=CondZ(a,b,c,Theta,V,Resp);
 
 	//atualizando a matriz com o log para o Metropolis-Hasting
-	[matriz]=Matrizlog(a,b,Theta,matriz,t2,1,Resp);
+	matriz=Matrizlog(a,b,Theta,matriz,t2,1,Resp);
 
 	if(k==1){
 	t2=zeros(NumItem,1);
 	}
 																																 
-	Theta,t1=MetropolisTheta(a,b,Theta,Resp,Z,taut,matriz);																	 
+	[Theta,t1]=MetropolisTheta(a,b,Theta,Resp,Z,taut,matriz);																	 
 
 	if(k>999){
 	st1+=t1;}
 
-	[matriz]=Matrizlog(a,b,Theta,matriz,t1,0,Resp);
+	matriz=Matrizlog(a,b,Theta,matriz,t1,0,Resp);
 
-	a,b,t2=MetropolisAB(a,b,Theta,Resp,Z,MeanAPrior,SigmaAPrior,MeanBPrior,SigmaBPrior,taua,taua,matriz);		  //criar
+	[a,b,t2]=MetropolisAB(a,b,Theta,Resp,Z,MeanAPrior,SigmaAPrior,MeanBPrior,SigmaBPrior,taua,taua,matriz);		  //criar
 
 	if(k>999){
 	st2+=t2;}
@@ -96,5 +96,5 @@ for(k = 1; k <= 15000; ++k)
 
 println(timespan(time1));
 println("Fim de set de parâemtros");
-return (taut, taua);
+return {taut, taua};
 }
