@@ -14,7 +14,7 @@
 
 main()
 {
-decl args=arglist() //1- num stud 2-NumItem 
+
 decl time;
 time=timer();
 
