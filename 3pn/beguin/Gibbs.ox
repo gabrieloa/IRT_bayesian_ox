@@ -22,7 +22,7 @@
 
 main()
 {
-
+decl args=arglist();
 decl time;
 time=timer();
 
@@ -108,6 +108,11 @@ println(columns(Resp));
      llike[0]= calcl(Resp,ThetaAtual,aAtual,bAtual,cAtual,MeanAPrior,SigmaAPrior,MeanBPrior,SigmaBPrior,AlphaPrior,BetaPrior)[0];
 
 
+	 decl timematrix;
+
+	 timematrix = zeros(NumSim,2);
+
+
 	// Inicio Gibbs	   
 	for(k = 1; k <= NumSim; ++k)	 
 	{
@@ -148,22 +153,20 @@ println(columns(Resp));
 
      llike[k]= calcl(Resp,ThetaAtual,aAtual,bAtual,cAtual,MeanAPrior,SigmaAPrior,MeanBPrior,SigmaBPrior,AlphaPrior,BetaPrior)[0];
 
+	   timematrix[k][0] = k;
+	   timematrix[k][1] = timespan(time);
 	   
 	   println(k);
-
-	   println(timespan(time));
-	
- 
 }
 
 
 
 						 
-savemat("a.mat",a,1) ;	
-savemat("b.mat",b,1) ;	
-savemat("c.mat",c,1) ;
-savemat("Theta.mat",Theta,1) ;
-savemat("llike.mat",llike,1) ;
+savemat(args[1]+"a.mat",a,1) ;	
+savemat(args[1]+"b.mat",b,1) ;	
+savemat(args[1]+"c.mat",c,1) ;
+savemat(args[1]+"Theta.mat",Theta,1) ;
+savemat(args[1]+"llike.mat",llike,1) ;
  
 println("Time = ",timespan(time));
 
