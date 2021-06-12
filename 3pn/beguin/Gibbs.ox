@@ -116,7 +116,7 @@ println(columns(Resp));
 
 	 sa=sb=sc=zeros(NumItem,1);
 
-     stheta=zeros(1,NumInd);
+     stheta=zeros(1,NumStud);
 
 
 	// Inicio Gibbs	   
