@@ -14,7 +14,7 @@
 
 main()
 {
-
+args = arglist()
 decl time;
 time=timer();
 
@@ -23,8 +23,8 @@ ranseed(555);
  	decl NumStud, NumItem;												
  	decl a0, b0, c0, Theta0, Resp;
 
- 	NumStud = 500;   																		    // Colunas
- 	NumItem = 20;   																		    // Linhas 
+ 	NumStud = args[1];   																		    // Colunas
+ 	NumItem = args[2];   																		    // Linhas 
 
 					
     a0 = 0.8 + 1.4*ranu(NumItem, 1);				        									// Cria vetor Coluna com parâmetro de discriminação  // COLUNA
