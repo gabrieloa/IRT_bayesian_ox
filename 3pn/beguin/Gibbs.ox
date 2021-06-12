@@ -114,6 +114,10 @@ println(columns(Resp));
 
 	 burn = 10000;
 
+	 sa=sb=sc=zeros(NumItem,1);
+
+     stheta=zeros(1,NumInd);
+
 
 	// Inicio Gibbs	   
 	for(k = 1; k <= NumSim; ++k)	 
