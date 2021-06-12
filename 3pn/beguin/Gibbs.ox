@@ -167,6 +167,7 @@ savemat(args[1]+"b.mat",b,1) ;
 savemat(args[1]+"c.mat",c,1) ;
 savemat(args[1]+"Theta.mat",Theta,1) ;
 savemat(args[1]+"llike.mat",llike,1) ;
+savemat(args[1]+"time.mat",timematrix,1) ;
  
 println("Time = ",timespan(time));
 
