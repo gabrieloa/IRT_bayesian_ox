@@ -108,7 +108,10 @@ println(columns(Resp));
      llike[0]= calcl(Resp,ThetaAtual,aAtual,bAtual,cAtual,MeanAPrior,SigmaAPrior,MeanBPrior,SigmaBPrior,AlphaPrior,BetaPrior)[0];
 
 
-	 decl timematrix;
+	 decl timematrix, burn;
+	 decl sa, sb, sc, st;
+
+	 burn = 10000;
 
 	 timematrix = zeros(NumSim+1,2);
 
@@ -157,9 +160,28 @@ println(columns(Resp));
 	   timematrix[k][1] = timespan(time);
 	   
 	   println(k);
+
+
+	   if(k > burn-1){
+		sa+=aAtual;
+
+		sb+=bAtual;
+
+		sc+=cAtual;
+
+		sTheta+=ThetaAtual;
+	   }
 }
 
+decl ThetaMean, aMean, bMean, cMean;
 
+aMean= sa/(NumSim-burn);
+
+bMean= sb/(NumSim-burn);
+
+cMean= sc/(NumSim-burn);
+
+ThetaMean= sTheta/(NumSim-burn);
 
 						 
 savemat(args[2]+"a.mat",a,1) ;	
@@ -168,6 +190,10 @@ savemat(args[2]+"c.mat",c,1) ;
 savemat(args[2]+"Theta.mat",Theta,1) ;
 savemat(args[2]+"llike.mat",llike,1) ;
 savemat(args[2]+"time.mat",timematrix,1) ;
+savemat(args[2]+"meanT.mat",ThetaMean,1);
+savemat(args[2]+"meana.mat",aMean,1);
+savemat(args[2]+"meanb.mat",bMean,1);
+savemat(args[2]+"meanc.mat",cMean,1);
  
 println("Time = ",timespan(time));
 
