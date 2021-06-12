@@ -32,7 +32,7 @@ time=timer();
 	decl k, X, Z;
 
 
-	Resp =loadmat("Resp.mat");
+	Resp =loadmat(args[1]);
 //	ind =loadmat("ThetaInd.mat");
 
 
@@ -91,16 +91,16 @@ println(columns(Resp));
 		  						   	 
 	decl Theta, a, b, c, ThetaMean, MeanA, MeanB, MeanC,un,mean,w, sa,sb,sc,stheta,medA,medB;
 
-	Theta=zeros(NumSim+1,NumStud);
+	Theta=zeros(NumSim+1,20);
 	Theta[0][] = ThetaAtual;													    //   1 x NumStud para guardar cadeias de Markov de Theta
 
-	a = zeros(NumSim+1,NumItem);
+	a = zeros(NumSim+1,20);
 	a[0][]=aAtual';									//  NumItem x 1 para guardar cadeias de Markov de "a"
 
-	b = zeros(NumSim+1,NumItem);
+	b = zeros(NumSim+1,20);
 	b[0][]=bAtual';
 	
-	c = zeros(NumSim+1,NumItem);
+	c = zeros(NumSim+1,20);
 	c[0][]=cAtual';
 
 	 decl llike=zeros(NumSim+1,1);
@@ -132,7 +132,7 @@ println(columns(Resp));
 //							 
 	   ThetaAtual = CondThetaj(aAtual, bAtual, X, Z, MeanThetaPrior, SigmaThetaPrior);
 
-	   Theta[k][] = ThetaAtual ;
+	   Theta[k][] = ThetaAtual[0:19] ;
 
 	 
 
@@ -141,15 +141,15 @@ println(columns(Resp));
 //					
 	   [aAtual,bAtual]=CondAB(ThetaAtual, X, Z, MeanAPrior, MeanBPrior, SigmaAPrior, SigmaBPrior);
 	 				  
-       a[k][] = aAtual';
-	   b[k][] = bAtual';
+       a[k][] = aAtual'[0:19];
+	   b[k][] = bAtual'[0:19];
 	
 //	  
 //	  Condicional Completa para c	  
 //		 
       cAtual = CondC(Z,Resp, AlphaPrior, BetaPrior, NumStud, NumItem);
 
-	  c[k][] = cAtual';					
+	  c[k][] = cAtual'[0:19];					
 
      llike[k]= calcl(Resp,ThetaAtual,aAtual,bAtual,cAtual,MeanAPrior,SigmaAPrior,MeanBPrior,SigmaBPrior,AlphaPrior,BetaPrior)[0];
 
@@ -162,12 +162,12 @@ println(columns(Resp));
 
 
 						 
-savemat(args[1]+"a.mat",a,1) ;	
-savemat(args[1]+"b.mat",b,1) ;	
-savemat(args[1]+"c.mat",c,1) ;
-savemat(args[1]+"Theta.mat",Theta,1) ;
-savemat(args[1]+"llike.mat",llike,1) ;
-savemat(args[1]+"time.mat",timematrix,1) ;
+savemat(args[2]+"a.mat",a,1) ;	
+savemat(args[2]+"b.mat",b,1) ;	
+savemat(args[2]+"c.mat",c,1) ;
+savemat(args[2]+"Theta.mat",Theta,1) ;
+savemat(args[2]+"llike.mat",llike,1) ;
+savemat(args[2]+"time.mat",timematrix,1) ;
  
 println("Time = ",timespan(time));
 
