@@ -89,7 +89,7 @@ println(columns(Resp));
 //	cAtual = constant(0.1,NumItem, 1);//c0;  
 
 		  						   	 
-	decl Theta, a, b, c, ThetaMean, MeanA, MeanB, MeanC,un,mean,w, sa,sb,sc,stheta,medA,medB;
+	decl Theta, a, b, c, MeanA, MeanB, MeanC,un,mean,w, sa,sb,sc,stheta,medA,medB;
 
 	Theta=zeros(NumSim+1,20);
 	Theta[0][] = ThetaAtual;													    //   1 x NumStud para guardar cadeias de Markov de Theta
