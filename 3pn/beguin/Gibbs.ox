@@ -110,7 +110,7 @@ println(columns(Resp));
 
 	 decl timematrix;
 
-	 timematrix = zeros(NumSim,2);
+	 timematrix = zeros(NumSim+1,2);
 
 
 	// Inicio Gibbs	   
