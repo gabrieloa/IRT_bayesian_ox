@@ -5,9 +5,9 @@
 #include <oxprob.h>
 
 
-#include "GeraBinomial.ox"
-#include "BancoDeDados.ox"
-#include "rtnorm.ox"
+#include <GeraBinomial.ox>
+#include <BancoDeDados.ox>
+#include <rtnorm.ox>
 
 //#include "AcumMean.ox"
 
