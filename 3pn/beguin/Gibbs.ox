@@ -108,12 +108,11 @@ println(columns(Resp));
      llike[0]= calcl(Resp,ThetaAtual,aAtual,bAtual,cAtual,MeanAPrior,SigmaAPrior,MeanBPrior,SigmaBPrior,AlphaPrior,BetaPrior)[0];
 
 
-	 decl timematrix, burn;
-	 decl sa, sb, sc, st;
-
-	 burn = 10000;
+	 decl timematrix;
 
 	 timematrix = zeros(NumSim+1,2);
+
+	 burn = 10000;
 
 
 	// Inicio Gibbs	   
@@ -169,7 +168,7 @@ println(columns(Resp));
 
 		sc+=cAtual;
 
-		sTheta+=ThetaAtual;
+		stheta+=ThetaAtual;
 	   }
 }
 
@@ -181,7 +180,7 @@ bMean= sb/(NumSim-burn);
 
 cMean= sc/(NumSim-burn);
 
-ThetaMean= sTheta/(NumSim-burn);
+ThetaMean= stheta/(NumSim-burn);
 
 						 
 savemat(args[2]+"a.mat",a,1) ;	
