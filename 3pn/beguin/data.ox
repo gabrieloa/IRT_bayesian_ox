@@ -14,7 +14,7 @@
 
 main()
 {
-args = arglist()
+decl args = arglist()
 decl time;
 time=timer();
 
