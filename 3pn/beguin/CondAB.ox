@@ -40,7 +40,8 @@
 
      SigmaAB =  SigmaB.*SigmaA.*rho  ;
 
- 	 A=rann(NumItem,1).*SigmaA + MeanA;
+	 A = rtnorm(NumItem, 1, MeanA, SigmaA.^2,0,.Inf);
+									   
 
 	 B=rann(NumItem,1).*(( SigmaB.^2 - (SigmaAB.^2).*(SigmaA.^(-2)) ).^(0.5)) + ( MeanB + SigmaAB.*(SigmaA.^(-2)).*(A-MeanA) );
 
