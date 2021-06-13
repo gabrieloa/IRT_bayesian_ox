@@ -108,9 +108,11 @@ println(columns(Resp));
      llike[0]= calcl(Resp,ThetaAtual,aAtual,bAtual,cAtual,MeanAPrior,SigmaAPrior,MeanBPrior,SigmaBPrior,AlphaPrior,BetaPrior)[0];
 
 
-	 decl timematrix;
+	 decl timearray;
 
-	 timematrix = zeros(NumSim+1,2);
+	 timearray = {{0,timespan(time)}};
+
+	 timearray = insertr(timearray,1,NumSim+1);
 
 	 burn = 10000;
 
@@ -159,8 +161,7 @@ println(columns(Resp));
 
      llike[k]= calcl(Resp,ThetaAtual,aAtual,bAtual,cAtual,MeanAPrior,SigmaAPrior,MeanBPrior,SigmaBPrior,AlphaPrior,BetaPrior)[0];
 
-	   timematrix[k][0] = k;
-	   timematrix[k][1] = timespan(time);
+	   timearray[k]={k,timespan(time)};
 	   
 	   println(k);
 
@@ -192,7 +193,7 @@ savemat(args[2]+"b.mat",b,1) ;
 savemat(args[2]+"c.mat",c,1) ;
 savemat(args[2]+"Theta.mat",Theta,1) ;
 savemat(args[2]+"llike.mat",llike,1) ;
-savemat(args[2]+"time.mat",timematrix,1) ;
+savesheet(args[2]+"time.xlsx",timearray) ;
 savemat(args[2]+"meanT.mat",ThetaMean,1);
 savemat(args[2]+"meana.mat",aMean,1);
 savemat(args[2]+"meanb.mat",bMean,1);
