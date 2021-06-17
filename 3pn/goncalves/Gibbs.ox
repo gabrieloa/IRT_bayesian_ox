@@ -20,6 +20,7 @@
 
 main()
 {
+decl args=arglist();
 
 decl time;
 time=timer();
@@ -30,7 +31,7 @@ time=timer();
 	decl k, X, Z;
 
 
-	Resp =loadmat("Resp.mat");
+	Resp =loadmat(args[1]);
 //	ind =loadmat("ThetaInd.mat");
 
 
@@ -89,22 +90,33 @@ println(columns(Resp));
 		  						   	 
 	decl Theta, a, b, c, ThetaMean, MeanA, MeanB, MeanC,un,mean,w, sa,sb,sc,stheta,medA,medB;
 
-	Theta=zeros(NumSim+1,100);
+	Theta=zeros(NumSim+1,20);
 	Theta[0][] = ThetaAtual[0:99];													    //   1 x NumStud para guardar cadeias de Markov de Theta
 
-	a = zeros(NumSim+1,NumItem);
+	a = zeros(NumSim+1,20)[0:19];
 	a[0][]=aAtual';									//  NumItem x 1 para guardar cadeias de Markov de "a"
 
-	b = zeros(NumSim+1,NumItem);
+	b = zeros(NumSim+1,20)[0:19];
 	b[0][]=bAtual';
 	
-	c = zeros(NumSim+1,NumItem);
+	c = zeros(NumSim+1,20)[0:19];
 	c[0][]=cAtual';
 
 	 decl llike=zeros(NumSim+1,1);
 
      llike[0]= calcl(Resp,ThetaAtual,aAtual,bAtual,cAtual,MeanAPrior,SigmaAPrior,MeanBPrior,SigmaBPrior,AlphaPrior,BetaPrior)[0];
 
+	 decl timearray;
+
+	 timearray = {{0,timespan(time)}};
+
+	 timearray = insertr(timearray,1,NumSim+1);
+
+	 burn = 10000;
+
+	 sa=sb=sc=zeros(NumItem,1);
+
+     stheta=zeros(1,NumStud);
 
 	// Inicio Gibbs	   
 	for(k = 1; k <= NumSim; ++k)	 
@@ -125,7 +137,7 @@ println(columns(Resp));
 //							 
 	   ThetaAtual = CondThetaj(aAtual, bAtual, X, Z, MeanThetaPrior, SigmaThetaPrior);
 
-	   Theta[k][] = ThetaAtual[0:99] ;
+	   Theta[k][] = ThetaAtual[0:19] ;
 
 	 
 
@@ -134,35 +146,60 @@ println(columns(Resp));
 //					
 	   [aAtual,bAtual]=CondAB(ThetaAtual, X, Z, MeanAPrior, MeanBPrior, SigmaAPrior, SigmaBPrior);
 	 				  
-       a[k][] = aAtual';
-	   b[k][] = bAtual';
+       a[k][] = aAtual'[0:19];
+	   b[k][] = bAtual'[0:19];
 	
 //	  
 //	  Condicional Completa para c	  
 //		 
       cAtual = CondC(Z, AlphaPrior, BetaPrior, NumStud, NumItem);
 
-	  c[k][] = cAtual';					
+	  c[k][] = cAtual'[0:19];					
 
      llike[k]= calcl(Resp,ThetaAtual,aAtual,bAtual,cAtual,MeanAPrior,SigmaAPrior,MeanBPrior,SigmaBPrior,AlphaPrior,BetaPrior)[0];
 
 	   
 	   println(k);
 
-	   println(timespan(time));
+	   timearray[k]={k,timespan(time)};
+	   
+	   println(k);
+
+
+	   if(k > burn-1){
+		sa+=aAtual;
+
+		sb+=bAtual;
+
+		sc+=cAtual;
+
+		stheta+=ThetaAtual;
+	   }
 	
  
 }
 
+decl ThetaMean, aMean, bMean, cMean;
 
+aMean= sa/(NumSim-burn);
 
-						 
-savemat("a.mat",a,1) ;	
-savemat("b.mat",b,1) ;	
-savemat("c.mat",c,1) ;
-savemat("Theta.mat",Theta,1) ;
-savemat("llike.mat",llike,1) ;
- 
+bMean= sb/(NumSim-burn);
+
+cMean= sc/(NumSim-burn);
+
+ThetaMean= stheta/(NumSim-burn);
+
+savemat(args[2]+"a.mat",a,1) ;	
+savemat(args[2]+"b.mat",b,1) ;	
+savemat(args[2]+"c.mat",c,1) ;
+savemat(args[2]+"Theta.mat",Theta,1) ;
+savemat(args[2]+"llike.mat",llike,1) ;
+savesheet(args[2]+"time.xlsx",timearray) ;
+savemat(args[2]+"meanT.mat",ThetaMean,1);
+savemat(args[2]+"meana.mat",aMean,1);
+savemat(args[2]+"meanb.mat",bMean,1);
+savemat(args[2]+"meanc.mat",cMean,1);
+
 println("Time = ",timespan(time));
 
 //println(temp~(meanc(Theta[2000:][]))');
