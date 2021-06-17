@@ -179,7 +179,7 @@ println(columns(Resp));
  
 }
 
-decl ThetaMean, aMean, bMean, cMean;
+decl aMean, bMean, cMean;
 
 aMean= sa/(NumSim-burn);
 
