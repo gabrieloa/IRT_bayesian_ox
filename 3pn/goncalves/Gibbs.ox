@@ -91,16 +91,16 @@ println(columns(Resp));
 	decl Theta, a, b, c, ThetaMean, MeanA, MeanB, MeanC,un,mean,w, sa,sb,sc,stheta,medA,medB;
 
 	Theta=zeros(NumSim+1,20);
-	Theta[0][] = ThetaAtual[0:99];													    //   1 x NumStud para guardar cadeias de Markov de Theta
+	Theta[0][] = ThetaAtual[0:19];													    //   1 x NumStud para guardar cadeias de Markov de Theta
 
-	a = zeros(NumSim+1,20)[0:19];
-	a[0][]=aAtual';									//  NumItem x 1 para guardar cadeias de Markov de "a"
+	a = zeros(NumSim+1,20);
+	a[0][]=aAtual'[0:19];									//  NumItem x 1 para guardar cadeias de Markov de "a"
 
-	b = zeros(NumSim+1,20)[0:19];
-	b[0][]=bAtual';
+	b = zeros(NumSim+1,20);
+	b[0][]=bAtual'[0:19];
 	
-	c = zeros(NumSim+1,20)[0:19];
-	c[0][]=cAtual';
+	c = zeros(NumSim+1,20);
+	c[0][]=cAtual'[0:19];
 
 	 decl llike=zeros(NumSim+1,1);
 
@@ -158,8 +158,7 @@ println(columns(Resp));
 
      llike[k]= calcl(Resp,ThetaAtual,aAtual,bAtual,cAtual,MeanAPrior,SigmaAPrior,MeanBPrior,SigmaBPrior,AlphaPrior,BetaPrior)[0];
 
-	   
-	   println(k);
+	
 
 	   timearray[k]={k,timespan(time)};
 	   
