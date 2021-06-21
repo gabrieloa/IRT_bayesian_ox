@@ -18,6 +18,7 @@
 
 main()
 {
+decl args=arglist();
 
 decl time;
 time=timer();
@@ -27,7 +28,7 @@ time=timer();
  	decl Resp, ind;
 	decl k, X, Z;
 
-	Resp =loadmat("Resp.mat");
+	Resp =loadmat(args[1]);
 
 	decl ThetaAtual, aAtual, bAtual, cAtual,V;
 
@@ -88,6 +89,18 @@ println(columns(Resp));
 
      llike[0]= calcl(Resp,ThetaAtual,aAtual,bAtual,cAtual,MeanAPrior,SigmaAPrior,MeanBPrior,SigmaBPrior,AlphaPrior,BetaPrior)[0];
 
+	decl timearray;
+
+	 timearray = {{0,timespan(time)}};
+
+	 timearray = insertr(timearray,1,NumSim+1);
+
+	 burn = 10000;
+
+	 sa=sb=sc=zeros(NumItem,1);
+
+     stheta=zeros(1,NumStud);
+	 
 	decl taua,taub,taut;
 
 	taut=ones(1,NumStud);
@@ -148,15 +161,41 @@ println(columns(Resp));
 
     llike[k]= calcl(Resp,ThetaAtual,aAtual,bAtual,cAtual,MeanAPrior,SigmaAPrior,MeanBPrior,SigmaBPrior,AlphaPrior,BetaPrior)[0];
 
-	println(k);
+	 timearray[k]={k,timespan(time)};
+	   
+	   println(k);
 
-	println(timespan(time)); 
+
+	   if(k > burn-1){
+		sa+=aAtual;
+
+		sb+=bAtual;
+
+		sc+=cAtual;
+
+		stheta+=ThetaAtual;
+	   }
 }
-savemat("a.mat",a,1) ;	
-savemat("b.mat",b,1) ;	
-savemat("c.mat",c,1) ;
-savemat("Theta.mat",Theta,1) ;
-savemat("llike.mat",llike,1) ;
+decl aMean, bMean, cMean;
+
+aMean= sa/(NumSim-burn);
+
+bMean= sb/(NumSim-burn);
+
+cMean= sc/(NumSim-burn);
+
+ThetaMean= stheta/(NumSim-burn);
+
+savemat(args[2]+"a.mat",a,1) ;	
+savemat(args[2]+"b.mat",b,1) ;	
+savemat(args[2]+"c.mat",c,1) ;
+savemat(args[2]+"Theta.mat",Theta,1) ;
+savemat(args[2]+"llike.mat",llike,1) ;
+savesheet(args[2]+"time.xlsx",timearray) ;
+savemat(args[2]+"meanT.mat",ThetaMean,1);
+savemat(args[2]+"meana.mat",aMean,1);
+savemat(args[2]+"meanb.mat",bMean,1);
+savemat(args[2]+"meanc.mat",cMean,1);
  
 println("Time = ",timespan(time));
 
