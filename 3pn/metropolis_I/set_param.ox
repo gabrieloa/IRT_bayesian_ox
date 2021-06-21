@@ -96,7 +96,7 @@ for(k = 1; k <= 15000; ++k)
 
 println(timespan(time1));
 
-savesheet(path+"time_set.xlsx",{{0,timespan(time)}}) ;
+savesheet(path+"time_set.xlsx",{{0,timespan(time1)}}) ;
 println("Fim de set de parâemtros");
 return {taut, taua};
 }
