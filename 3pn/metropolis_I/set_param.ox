@@ -1,7 +1,7 @@
 ﻿#include <set_theta.ox>
 #include <set_a.ox>
 
-set_param(decl a, decl b, decl c, decl Theta, decl taut, decl taua, decl Resp){
+set_param(decl a, decl b, decl c, decl Theta, decl taut, decl taua, decl Resp, decl path){
 decl time1;
 
 time1=timer();
@@ -95,6 +95,8 @@ for(k = 1; k <= 15000; ++k)
 }
 
 println(timespan(time1));
+
+savesheet(path+"time_set.xlsx",{{0,timespan(time)}}) ;
 println("Fim de set de parâemtros");
 return {taut, taua};
 }

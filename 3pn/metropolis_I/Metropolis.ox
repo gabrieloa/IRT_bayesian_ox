@@ -101,7 +101,7 @@ println(columns(Resp));
 
 	taua=0.3*ones(NumItem,1);
 
-	[taut,taua] = set_param(aAtual, bAtual, cAtual, ThetaAtual, taut, taua, Resp);
+	[taut,taua] = set_param(aAtual, bAtual, cAtual, ThetaAtual, taut, taua, Resp, args[2]);
 
 	print(taut);
 	print(taua);
