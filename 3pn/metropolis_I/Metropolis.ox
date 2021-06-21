@@ -196,6 +196,8 @@ savemat(args[2]+"meanT.mat",ThetaMean,1);
 savemat(args[2]+"meana.mat",aMean,1);
 savemat(args[2]+"meanb.mat",bMean,1);
 savemat(args[2]+"meanc.mat",cMean,1);
+savemat(args[2]+"st1.mat",st1,1);
+savemat(args[2]+"st2.mat",st2,1);
  
 println("Time = ",timespan(time));
 
