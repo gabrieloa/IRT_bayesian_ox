@@ -89,12 +89,6 @@ println(columns(Resp));
 
      llike[0]= calcl(Resp,ThetaAtual,aAtual,bAtual,cAtual,MeanAPrior,SigmaAPrior,MeanBPrior,SigmaBPrior,AlphaPrior,BetaPrior)[0];
 
-	decl timearray;
-
-	 timearray = {{0,timespan(time)}};
-
-	 timearray = insertr(timearray,1,NumSim+1);
-
 	 burn = 10000;
 
 	 sa=sb=sc=zeros(NumItem,1);
@@ -111,6 +105,12 @@ println(columns(Resp));
 
 	print(taut);
 	print(taua);
+
+		decl timearray;
+
+	 timearray = {{0,timespan(time)}};
+
+	 timearray = insertr(timearray,1,NumSim+1);
 	//adicionar o código para definir qual sera o valor de taut e taua a ser usada nas iterações 
 
 	decl t1,t2,st1,st2;
