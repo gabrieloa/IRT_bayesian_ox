@@ -14,7 +14,8 @@ for(i=0;i<8;++i){
 	boundres = boundres - 0.1;
 }
 				  
-return tau.*(correction.^5);
+return tau.*(correction);
 
 
 }
+

@@ -38,6 +38,7 @@ ind=exp(aux1+m).>=1;
 alpha=(1-ind).*exp(aux1+m)+(ind).*ones(1,sizec(Theta));
 
 k=rbinom(1,sizec(Theta),1,alpha);
+	   
 
 thetafinal=(1-k).*Theta+k.*thetaprop;
 			 

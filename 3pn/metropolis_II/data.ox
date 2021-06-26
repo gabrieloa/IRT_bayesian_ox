@@ -23,8 +23,8 @@ ranseed(111);
  	decl NumStud, NumItem;												
  	decl a0, b0, c0, Theta0, Resp;
 
- 	NumStud = 500;   																		    // Colunas
- 	NumItem = 20;   																		    // Linhas 
+ 	NumStud = 2000;   																		    // Colunas
+ 	NumItem = 40;   																		    // Linhas 
 
 					
     a0 = 0.3 + 2*ranu(NumItem, 1);				        									// Cria vetor Coluna com parâmetro de discriminação  // COLUNA
@@ -42,12 +42,12 @@ ranseed(111);
 //	decl RespC=Resp'[ind][];   
 
 	
-	savemat("a0.mat",a0);
-	savemat("b0.mat",b0);
-	savemat("c0.mat",c0);
-	savemat("Theta0.mat",Theta0');
+	savemat("C:\\Users\\gabri\\OneDrive\\Desktop\\git\\IRT_bayesian_ox\\3pn\\metropolis_II\\a0.mat",a0);
+	savemat("C:\\Users\\gabri\\OneDrive\\Desktop\\git\\IRT_bayesian_ox\\3pn\\metropolis_II\\b0.mat",b0);
+	savemat("C:\\Users\\gabri\\OneDrive\\Desktop\\git\\IRT_bayesian_ox\\3pn\\metropolis_II\\c0.mat",c0);
+	savemat("C:\\Users\\gabri\\OneDrive\\Desktop\\git\\IRT_bayesian_ox\\3pn\\metropolis_II\\Theta0.mat",Theta0');
 //	savemat("ThetaC.mat",ThetaC);
-	savemat("Resp.mat",Resp);
+	savemat("C:\\Users\\gabri\\OneDrive\\Desktop\\git\\IRT_bayesian_ox\\3pn\\metropolis_II\\Resp.mat",Resp);
 //	savemat("RespC.mat",RespC);
 //	savemat("ThetaInd.mat",ind);
 	

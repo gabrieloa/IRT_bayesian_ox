@@ -1,6 +1,6 @@
-﻿#include <set_theta.ox>
-#include <set_a.ox>
-#include <set_c.ox>
+﻿#include "set_theta.ox"
+#include "set_a.ox"
+#include "set_c.ox"
 
 set_param(decl a, decl b, decl c, decl Theta, decl taut, decl taua, decl delta, decl Resp){
 
@@ -42,24 +42,26 @@ st2=t2=st3=t3=zeros(NumItem,1);
 
 t3=ones(NumItem,1);	
 
-for(k = 1; k <= 20000; ++k)	 
+for(k = 1; k <= 15000; ++k)	 
 	{
+
 	matriz=Matrizlog(a,b,c,Theta,matriz,t3,1,Resp);
 
 	if(k==1){
 	t3=zeros(NumItem,1);
 	}
 																																 
-	[Theta,t1]=MetropolisTheta(a,b,c,Theta,Resp,taut,matriz);																	 
+	[Theta,t1]=MetropolisTheta(a,b,c,Theta,Resp,taut,matriz);
 
-	if(k>1999){
-	st1+=t1;}
+	if(k>999){
+	st1+=t1;
+	}
 
 	matriz=Matrizlog(a,b,c,Theta,matriz,t1,0,Resp);
 
 	[a,b,t2]=MetropolisAB(a,b,c,Theta,Resp,MeanAPrior,SigmaAPrior,MeanBPrior,SigmaBPrior,taua,taua,matriz);		  //criar
 
-	if(k>1999){
+	if(k>999){
 	st2+=t2;}
 
 	matriz=Matrizlog(a,b,c,Theta,matriz,t2,0,Resp);
@@ -67,28 +69,27 @@ for(k = 1; k <= 20000; ++k)
 	[c,t3]= MetropolisC(a,b,c,Theta,Resp,AlphaPrior,BetaPrior,delta,matriz);
 
 												   
-	if(k>1999){
+	if(k>999){
 	st3+=t3;}
 
-	if(k==(i+1)*1000-1){
+	if(k==i*1000-1){
 	 st1=st1./1000;
 	 st2=st2./1000;
-	 st3=st3./1000;
+	 st3=st3./1000;	
 
+	 println(k);
 	 println(sizer(vecindex(st1.>= 0.3 .&& st1.<=0.4)));
 	 println(sizer(vecindex(st2.>= 0.3 .&& st2.<=0.4)));
 	 println(sizer(vecindex(st3.>= 0.3 .&& st3.<=0.4)));
-
+	
 	 
-	savemat("st1.mat",st1,1);
-	savemat("st2.mat",st2,1);
-	savemat("st3.mat",st3,1);
+	savemat("C:\\Users\\gabri\\OneDrive\\Desktop\\git\\IRT_bayesian_ox\\3pn\\metropolis_II\\st1.mat",st1,1);
+	savemat("C:\\Users\\gabri\\OneDrive\\Desktop\\git\\IRT_bayesian_ox\\3pn\\metropolis_II\\st2.mat",st2,1);
+	savemat("C:\\Users\\gabri\\OneDrive\\Desktop\\git\\IRT_bayesian_ox\\3pn\\metropolis_II\\st3.mat",st3,1);
 	
 	taut = set_theta(st1,taut);
 
 	taua = set_a(st2,taua);
-
-	print(st3); 
 
 	delta = set_c(st3,delta);
 	
@@ -96,18 +97,15 @@ for(k = 1; k <= 20000; ++k)
 
 	st2=st3=zeros(NumItem,1);
 
-	savemat("tautotimo.mat",taut,1);
-	savemat("tauaotimo.mat",taua,1);
-	savemat("deltaotimo.mat",delta,1);
-
-	print(delta);
+	savemat("C:\\Users\\gabri\\OneDrive\\Desktop\\git\\IRT_bayesian_ox\\3pn\\metropolis_II\\tautotimo.mat",taut,1);
+	savemat("C:\\Users\\gabri\\OneDrive\\Desktop\\git\\IRT_bayesian_ox\\3pn\\metropolis_II\\tauaotimo.mat",taua,1);
+	savemat("C:\\Users\\gabri\\OneDrive\\Desktop\\git\\IRT_bayesian_ox\\3pn\\metropolis_II\\deltaotimo.mat",delta,1);
 	
-	i+=1;	;
+	i+=1;	
 	}
 }
 println(timespan(time1));
 println("Fim de set de parâmetros");
-
-print(taua);  
+	    
 return{taut,taua,delta};
 }

@@ -13,6 +13,7 @@
 
 #include "l.ox"
 #include "set_param.ox"
+
 main()
 {
 
@@ -37,7 +38,7 @@ time=timer();
 	
 	aAtual=ones(NumItem,1);
 	bAtual=SBPb(Resp);
-	cAtual=zeros(NumItem,1)+0.2;
+	cAtual=zeros(NumItem,1)+0.1;
 	ThetaAtual=SBPtheta(Resp);
 	//decl ThetaC=loadmat("ThetaC.mat");
 
@@ -83,9 +84,9 @@ println(columns(Resp));
 
 	decl taua,taub,taut,delta;
 
-	taut=0.6*ones(1,NumStud);
-	taua=0.1*ones(NumItem,1);
-	delta=(10^-20)*ones(NumItem,1);
+	taut=ones(1,NumStud);
+	taua=0.05*ones(NumItem,1);
+	delta=0.1*ones(NumItem,1);
 
 	[taut,taua,delta] = set_param(aAtual, bAtual, cAtual, ThetaAtual, taut, taua, delta, Resp);
 	  
@@ -138,11 +139,11 @@ println(columns(Resp));
 
 	println(timespan(time)); 
 }
-savemat("a.mat",a,1);
-savemat("b.mat",b,1);
-savemat("c.mat",c,1);
-savemat("Theta.mat",Theta,1);
-savemat("llike.mat",llike,1);
+savemat("C:\\Users\\gabri\\OneDrive\\Desktop\\git\\IRT_bayesian_ox\\3pn\\metropolis_II\\a.mat",a,1);
+savemat("C:\\Users\\gabri\\OneDrive\\Desktop\\git\\IRT_bayesian_ox\\3pn\\metropolis_II\\b.mat",b,1);
+savemat("C:\\Users\\gabri\\OneDrive\\Desktop\\git\\IRT_bayesian_ox\\3pn\\metropolis_II\\c.mat",c,1);
+savemat("C:\\Users\\gabri\\OneDrive\\Desktop\\git\\IRT_bayesian_ox\\3pn\\metropolis_II\\Theta.mat",Theta,1);
+savemat("C:\\Users\\gabri\\OneDrive\\Desktop\\git\\IRT_bayesian_ox\\3pn\\metropolis_II\\llike.mat",llike,1);
 
 println("Time = ",timespan(time));
 }
