@@ -145,6 +145,9 @@ println(columns(Resp));
 	matriz=Matrizlog(aAtual,bAtual,cAtual,ThetaAtual,matriz,t2,0,Resp);
 
 	[cAtual,t3]= MetropolisC(aAtual,bAtual,cAtual,ThetaAtual,Resp,AlphaPrior,BetaPrior,delta,matriz);
+
+	st3+=t3;
+	
 	c[k][0:19] = cAtual'[0:19];					
 
     llike[k]= calcl(Resp,ThetaAtual,aAtual,bAtual,cAtual,MeanAPrior,SigmaAPrior,MeanBPrior,SigmaBPrior,AlphaPrior,BetaPrior)[0];
