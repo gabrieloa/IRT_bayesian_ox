@@ -17,6 +17,8 @@
 main()
 {
 
+decl args=arglist();
+
 decl time;
 time=timer();
 
@@ -25,7 +27,7 @@ time=timer();
  	decl Resp, ind;
 	decl k, X, Z;
 
-	Resp =loadmat("Resp.mat");
+	Resp =loadmat(args[1]);
 
 	decl ThetaAtual, aAtual, bAtual, cAtual,V;
 
@@ -69,27 +71,39 @@ println(columns(Resp));
 	Theta[0][] = ThetaAtual[0:19];													    //   1 x NumStud para guardar cadeias de Markov de Theta
 
 	a = zeros(NumSim+1,20);
-	a[0][0:19]=aAtual';									//  NumItem x 1 para guardar cadeias de Markov de "a"
+	a[0][0:19]=aAtual'[0:19];									//  NumItem x 1 para guardar cadeias de Markov de "a"
 
 	b = zeros(NumSim+1,20);
-	b[0][0:19]=bAtual';
+	b[0][0:19]=bAtual'[0:19];
 	
 	c = zeros(NumSim+1,20);
-	c[0][0:19]=cAtual';
+	c[0][0:19]=cAtual'[0:19];
 
 	 decl llike=zeros(NumSim+1,1);
 
      llike[0]= calcl(Resp,ThetaAtual,aAtual,bAtual,cAtual,MeanAPrior,SigmaAPrior,MeanBPrior,SigmaBPrior,AlphaPrior,BetaPrior)[0];
 
+	 burn = 10000;
 
+	 sa=sb=sc=zeros(NumItem,1);
+
+     stheta=zeros(1,NumStud);
+	 
 	decl taua,taub,taut,delta;
 
 	taut=ones(1,NumStud);
 	taua=0.05*ones(NumItem,1);
 	delta=0.1*ones(NumItem,1);
 
-	[taut,taua,delta] = set_param(aAtual, bAtual, cAtual, ThetaAtual, taut, taua, delta, Resp);
-	  
+	[taut,taua,delta] = set_param(aAtual, bAtual, cAtual, ThetaAtual, taut, taua, delta, Resp,  args[2]);
+
+	decl timearray;
+
+	 timearray = {{0,timespan(time)}};
+
+	 timearray = insertr(timearray,1,NumSim+1);
+
+	
 	//adicionar o código para definir qual sera o valor de taut e taua a ser usada nas iterações 
 
 	decl t1,t2,st1,st2,st3,t3;
@@ -125,25 +139,53 @@ println(columns(Resp));
 
 	st2+=t2;
 
-	a[k][0:19] = aAtual';
-	b[k][0:19] = bAtual';
+	a[k][0:19] = aAtual'[0:19];
+	b[k][0:19] = bAtual'[0:19];
 
 	matriz=Matrizlog(aAtual,bAtual,cAtual,ThetaAtual,matriz,t2,0,Resp);
 
 	[cAtual,t3]= MetropolisC(aAtual,bAtual,cAtual,ThetaAtual,Resp,AlphaPrior,BetaPrior,delta,matriz);
-	c[k][0:19] = cAtual';					
+	c[k][0:19] = cAtual'[0:19];					
 
     llike[k]= calcl(Resp,ThetaAtual,aAtual,bAtual,cAtual,MeanAPrior,SigmaAPrior,MeanBPrior,SigmaBPrior,AlphaPrior,BetaPrior)[0];
 
-	println(k);
+	timearray[k]={k,timespan(time)};
+	   
+	   println(k);
 
-	println(timespan(time)); 
+
+	   if(k > burn-1){
+		sa+=aAtual;
+
+		sb+=bAtual;
+
+		sc+=cAtual;
+
+		stheta+=ThetaAtual;
+	   }
 }
-savemat("C:\\Users\\gabri\\OneDrive\\Desktop\\git\\IRT_bayesian_ox\\3pn\\metropolis_II\\a.mat",a,1);
-savemat("C:\\Users\\gabri\\OneDrive\\Desktop\\git\\IRT_bayesian_ox\\3pn\\metropolis_II\\b.mat",b,1);
-savemat("C:\\Users\\gabri\\OneDrive\\Desktop\\git\\IRT_bayesian_ox\\3pn\\metropolis_II\\c.mat",c,1);
-savemat("C:\\Users\\gabri\\OneDrive\\Desktop\\git\\IRT_bayesian_ox\\3pn\\metropolis_II\\Theta.mat",Theta,1);
-savemat("C:\\Users\\gabri\\OneDrive\\Desktop\\git\\IRT_bayesian_ox\\3pn\\metropolis_II\\llike.mat",llike,1);
+decl aMean, bMean, cMean;
 
+aMean= sa/(NumSim-burn);
+
+bMean= sb/(NumSim-burn);
+
+cMean= sc/(NumSim-burn);
+
+ThetaMean= stheta/(NumSim-burn);
+
+savemat(args[2]+"a.mat",a,1) ;	
+savemat(args[2]+"b.mat",b,1) ;	
+savemat(args[2]+"c.mat",c,1) ;
+savemat(args[2]+"Theta.mat",Theta,1) ;
+savemat(args[2]+"llike.mat",llike,1) ;
+savesheet(args[2]+"time.xlsx",timearray) ;
+savemat(args[2]+"meanT.mat",ThetaMean,1);
+savemat(args[2]+"meana.mat",aMean,1);
+savemat(args[2]+"meanb.mat",bMean,1);
+savemat(args[2]+"meanc.mat",cMean,1);
+savemat(args[2]+"st1.mat",st1,1);
+savemat(args[2]+"st2.mat",st2,1);
+ 
 println("Time = ",timespan(time));
 }

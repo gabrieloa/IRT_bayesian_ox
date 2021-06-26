@@ -2,7 +2,7 @@
 #include "set_a.ox"
 #include "set_c.ox"
 
-set_param(decl a, decl b, decl c, decl Theta, decl taut, decl taua, decl delta, decl Resp){
+set_param(decl a, decl b, decl c, decl Theta, decl taut, decl taua, decl delta, decl Resp, decl path){
 
 decl time1;
 
@@ -83,9 +83,9 @@ for(k = 1; k <= 15000; ++k)
 	 println(sizer(vecindex(st3.>= 0.3 .&& st3.<=0.4)));
 	
 	 
-	savemat("C:\\Users\\gabri\\OneDrive\\Desktop\\git\\IRT_bayesian_ox\\3pn\\metropolis_II\\st1.mat",st1,1);
-	savemat("C:\\Users\\gabri\\OneDrive\\Desktop\\git\\IRT_bayesian_ox\\3pn\\metropolis_II\\st2.mat",st2,1);
-	savemat("C:\\Users\\gabri\\OneDrive\\Desktop\\git\\IRT_bayesian_ox\\3pn\\metropolis_II\\st3.mat",st3,1);
+	savemat(path+"st1.mat",st1,1);
+	savemat(path+"st2.mat",st2,1);
+	savemat(path+"st3.mat",st3,1);
 	
 	taut = set_theta(st1,taut);
 
@@ -97,14 +97,15 @@ for(k = 1; k <= 15000; ++k)
 
 	st2=st3=zeros(NumItem,1);
 
-	savemat("C:\\Users\\gabri\\OneDrive\\Desktop\\git\\IRT_bayesian_ox\\3pn\\metropolis_II\\tautotimo.mat",taut,1);
-	savemat("C:\\Users\\gabri\\OneDrive\\Desktop\\git\\IRT_bayesian_ox\\3pn\\metropolis_II\\tauaotimo.mat",taua,1);
-	savemat("C:\\Users\\gabri\\OneDrive\\Desktop\\git\\IRT_bayesian_ox\\3pn\\metropolis_II\\deltaotimo.mat",delta,1);
+	savemat(path+"tautotimo.mat",taut,1);
+	savemat(path+"tauaotimo.mat",taua,1);
+	savemat(path+"deltaotimo.mat",delta,1);
 	
 	i+=1;	
 	}
 }
 println(timespan(time1));
+savesheet(path+"time_set.xlsx",{{0,timespan(time1)}}) ;
 println("Fim de set de parâmetros");
 	    
 return{taut,taua,delta};
