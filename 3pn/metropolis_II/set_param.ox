@@ -83,9 +83,9 @@ for(k = 1; k <= 15000; ++k)
 	 println(sizer(vecindex(st3.>= 0.3 .&& st3.<=0.4)));
 	
 	 
-	savemat(path+"st1.mat",st1,1);
-	savemat(path+"st2.mat",st2,1);
-	savemat(path+"st3.mat",st3,1);
+	savemat(path+"st1_config.mat",st1,1);
+	savemat(path+"st2_config.mat",st2,1);
+	savemat(path+"st3_config.mat",st3,1);
 	
 	taut = set_theta(st1,taut);
 

@@ -76,8 +76,8 @@ for(k = 1; k <= 15000; ++k)
 	 println(sizer(vecindex(st1.>= 0.3 .&& st1.<=0.4)));
 	 println(sizer(vecindex(st2.>= 0.3 .&& st2.<=0.4)));
 	 
-	savemat("st1.mat",st1,1);
-	savemat("st2.mat",st2,1);
+	savemat(path+"st1_config.mat",st1,1);
+	savemat(path+"st2_config.mat",st2,1);
 	
 	taut = set_theta(st1,taut);
 
@@ -87,8 +87,8 @@ for(k = 1; k <= 15000; ++k)
 
 	st2=zeros(NumItem,1);
 
-	savemat("tautotimo.mat",taut,1);
-	savemat("tauaotimo.mat",taua,1);
+	savemat(path+"tautotimo.mat",taut,1);
+	savemat(path+"tauaotimo.mat",taua,1);
 	
 	i+=1;
 	}
