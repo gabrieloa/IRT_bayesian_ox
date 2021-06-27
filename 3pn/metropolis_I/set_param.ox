@@ -40,7 +40,7 @@ st1=t1=zeros(1,NumStud);
 st2=t2=zeros(NumItem,1);
 
 
-for(k = 1; k <= 15000; ++k)	 
+for(k = 1; k <= 30000; ++k)	 
 	{
 
 	V= calcV(a,b,c,Theta);										                   //criar

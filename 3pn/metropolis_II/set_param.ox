@@ -42,7 +42,7 @@ st2=t2=st3=t3=zeros(NumItem,1);
 
 t3=ones(NumItem,1);	
 
-for(k = 1; k <= 15000; ++k)	 
+for(k = 1; k <= 30000; ++k)	 
 	{
 
 	matriz=Matrizlog(a,b,c,Theta,matriz,t3,1,Resp);
