@@ -39,8 +39,6 @@ m2 = ((1-cprop)./(1-c)).^(beta-1);
 
 m3 = (minr((c+delta)~ones(NumItens,1))-maxr((c-delta)~zeros(NumItens,1)))./(minr((cprop+delta)~ones(NumItens,1))-maxr((cprop-delta)~zeros(NumItens,1)));
 
-
-
 m= m1.*m2.*m3;
 
 aux1=Vero_prop-Vero_atual;
@@ -48,6 +46,8 @@ aux1=Vero_prop-Vero_atual;
 ind=(exp(aux1).*m).>=1;
 
 al=(1-ind).*exp(aux1).*m+(ind).*ones(NumItens,1);
+
+al[vecindex(isdotnan(al))] = 1;
 
 k=rbinom(NumItens,1,1,al);
 
