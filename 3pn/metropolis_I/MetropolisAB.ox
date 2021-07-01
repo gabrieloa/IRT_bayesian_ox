@@ -37,6 +37,8 @@ ind=exp(aux1+m).>=1;
 	
 alpha=auxa.*((1-ind).*exp(aux1+m)+(ind).*ones(NumItens,1));
 
+alpha[vecindex(isdotnan(alpha))] = 1;
+
 k=rbinom(NumItens,1,1,alpha);
 
 afinal=(1-k).*a+k.*aprop;
